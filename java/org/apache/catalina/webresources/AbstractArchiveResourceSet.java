@@ -68,7 +68,7 @@ public abstract class AbstractArchiveResourceSet extends AbstractResourceSet {
         String webAppMount = getWebAppMount();
 
         ArrayList<String> result = new ArrayList<>();
-        if (isPathMounted(path, webAppMount)) {
+        if (path.startsWith(webAppMount)) {
             String pathInJar = getInternalPath() + path.substring(webAppMount.length());
             // Always strip off the leading '/' to get the JAR path
             if (!pathInJar.isEmpty() && pathInJar.charAt(0) == '/') {
@@ -108,14 +108,13 @@ public abstract class AbstractArchiveResourceSet extends AbstractResourceSet {
         return result.toArray(new String[0]);
     }
 
-
     @Override
     public final Set<String> listWebAppPaths(String path) {
         checkPath(path);
         String webAppMount = getWebAppMount();
 
         ResourceSet<String> result = new ResourceSet<>();
-        if (isPathMounted(path, webAppMount)) {
+        if (path.startsWith(webAppMount)) {
             String pathInJar = getInternalPath() + path.substring(webAppMount.length());
             // Always strip off the leading '/' to get the JAR path and make
             // sure it ends in '/'
@@ -226,7 +225,7 @@ public abstract class AbstractArchiveResourceSet extends AbstractResourceSet {
         // If the JAR has been mounted below the web application root, return
         // an empty resource for requests outside of the mount point.
 
-        if (isPathMounted(path, webAppMount)) {
+        if (path.startsWith(webAppMount)) {
             String pathInJar = getInternalPath() + path.substring(webAppMount.length());
             // Always strip off the leading '/' to get the JAR path
             if (!pathInJar.isEmpty() && pathInJar.charAt(0) == '/') {
